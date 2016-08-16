@@ -1,7 +1,0 @@
-options:
-  repository_configuration:
-    type: string
-    default:
-    description: |
-        Repository to clone for the build workspace configuration. assumes
-        directory tree starts from the `/var/lib/jenkins/jobs` path.

@@ -6,6 +6,8 @@ source charms.reactive.sh
 
 @when_not 'kubernetes-builder workload_builder.configured'
 function install_kubernetes-builder() {
+  status-set "maintenance" "Configuring workspace environment pre-conditions"
+
   usermod -G docker jenkins
 
   # Reconfigure docker to use AUFS instead of DeviceMapper
@@ -28,4 +30,25 @@ EOF
 }
 
 
+@when_not 'workspace.payload-delivered'
+function deliver_resource_payload() {
+  set +e
+  WORKSPACEZIP=$(resource-get workspace)
+  set -e
+  if [[ $? != 0 || -z $WORKSPACEZIP ]]; then
+     status-set "waiting" "Waiting on workspace to be provided"
+     return
+  fi
+
+  if [ ! -z "${WORKSPACEZIP}" ]; then
+     cp $WORKSPACEZIP /var/lib/jenkins/jobs/delivery.zip
+     cd /var/lib/jenkins/jobs
+     unzip delivery.zip
+     rm delivery.zip
+     chown -R jenkins:jenkins *
+     service jenkins restart
+     status-set "active" "Workspace unpacked."
+     charms.reactive set_state 'workspace.payload-delivered'
+  fi
+}
 reactive_handler_main

@@ -11,3 +11,10 @@ subordinate: true
 requires:
   jenkins-host:
     interface: juju-info
+    scope: container
+resources:
+  workspace:
+    type: file
+    filename: workspace.zip
+    description: |
+        Directory Tree warehoused in the BUILD directory: /var/lib/jenkins/jobs/$WORKSPACE
