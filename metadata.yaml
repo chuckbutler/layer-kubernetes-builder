@@ -1,0 +1,13 @@
+name: kubernetes-builder
+summary: <Fill in summary here>
+maintainers:
+  - Matthew Bruzek <matthew.bruzek@canonical.com>
+  - Charles Butler <charles.butler@canonical.com>
+description: |
+  Deploys the workspace configuration to build kubernetes
+tags:
+  - addon
+subordinate: true
+requires:
+  jenkins-host:
+    interface: juju-info
