@@ -22,7 +22,7 @@ EOF
 
   # restart jenkins so it can access docker
   service jenkins restart
-  service docker.io restart
+  service docker restart
 
   charms.reactive set_state 'kubernetes-builder workload_builder.configured'
 }
