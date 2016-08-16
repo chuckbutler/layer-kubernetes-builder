@@ -3,6 +3,7 @@ set -ex
 
 source charms.reactive.sh
 
+JENKINS_WORKSPACE_DIR=/var/lib/jenkins/jobs
 
 @when_not 'kubernetes-builder workload_builder.configured'
 function install_kubernetes-builder() {
@@ -41,8 +42,8 @@ function deliver_resource_payload() {
   fi
 
   if [ ! -z "${WORKSPACEZIP}" ]; then
-     cp $WORKSPACEZIP /var/lib/jenkins/jobs/delivery.zip
-     cd /var/lib/jenkins/jobs
+     cp $WORKSPACEZIP $JENKINS_WORKSPACE_DIR/delivery.zip
+     cd $JENKINS_WORKSPACE_DIR
      unzip delivery.zip
      rm delivery.zip
      chown -R jenkins:jenkins *
