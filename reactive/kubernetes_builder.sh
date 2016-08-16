@@ -4,7 +4,7 @@ set -ex
 source charms.reactive.sh
 
 
-@when_not 'docker.configured'
+@when_not 'kubernetes-builder workload_builder.configured'
 function install_kubernetes-builder() {
   usermod -G docker jenkins
 
@@ -22,8 +22,9 @@ EOF
 
   # restart jenkins so it can access docker
   service jenkins restart
+  service docker.io restart
 
-  charms.reactive set_state 'docker.configured'
+  charms.reactive set_state 'kubernetes-builder workload_builder.configured'
 }
 
 
